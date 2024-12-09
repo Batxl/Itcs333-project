@@ -35,15 +35,19 @@ $notifications = fetchNotifications($conn, $example_user_id);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #ffeef3;
             margin: 20px;
+            color: #5a1d44;
+        }
+        h3 {
+            color: #a7325c;
         }
         .notification {
-            background-color: #fff;
-            border: 1px solid #ddd;
+            background-color: #fffbfc;
+            border: 1px solid #f5cbd4;
             padding: 15px;
             margin-bottom: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
         }
         .notification p {
             margin: 0;
@@ -51,18 +55,22 @@ $notifications = fetchNotifications($conn, $example_user_id);
         }
         .notification small {
             font-size: 12px;
-            color: #666;
+            color: #9a7480;
         }
         button {
             padding: 10px 20px;
-            background-color: #28a745;
+            background-color: #f28ba1;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #218838;
+            background-color: #d96e89;
+        }
+        form {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -79,13 +87,13 @@ $notifications = fetchNotifications($conn, $example_user_id);
         <p>No new notifications.</p>
     <?php endif; ?>
 
-    
+    <!-- Form to mark all notifications as read -->
     <form method="post">
         <button type="submit" name="mark_read">Mark All as Read</button>
     </form>
 
     <?php
-    // Mark all notifications as read
+    // Mark all notifications as read if the button is clicked
     if (isset($_POST['mark_read'])) {
         if (markAsRead($conn, $example_user_id)) {
             echo "<p>All notifications marked as read.</p>";
