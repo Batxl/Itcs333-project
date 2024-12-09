@@ -15,7 +15,6 @@ try {
     exit;
 }
 
-
 try {
     $popularityQuery = "SELECT room_id, COUNT(room_id) AS Times_Used
                         FROM reservations
@@ -34,7 +33,6 @@ try {
     echo "Error fetching popular rooms: " . $e->getMessage();
     exit;
 }
-
 
 try {
     $usageQuery = "SELECT room_id, MONTH(Date) AS booking_month, COUNT(room_id) AS usage_count
@@ -56,8 +54,7 @@ try {
         }
         $roomUsageData[$roomId][$month - 1] = $count; 
     }
-
-    
+} catch (PDOException $e) {
     echo "Error fetching room usage data: " . $e->getMessage();
     exit;
 }
