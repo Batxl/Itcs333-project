@@ -8,21 +8,24 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f4f4f9;
+            background-color: #fff5f8;
+            color: #333;
         }
-        .comment {
+        h1 {
+            text-align: center;
+            color: #ff4f6d;
+        }
+        .comment, .reply {
             margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #ff8fa3;
             padding: 10px;
-            border-radius: 5px;
-            background-color: #ffffff;
+            border-radius: 10px;
+            background-color: #ffe5eb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .reply {
             margin-left: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: #ffc2d1;
         }
         .comment-text, .reply-text {
             margin: 5px 0;
@@ -31,19 +34,19 @@
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #ff8fa3;
+            border-radius: 10px;
         }
         button {
             padding: 10px 15px;
-            background-color: #28a745;
+            background-color: #ff4f6d;
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #218838;
+            background-color: #ff8fa3;
         }
     </style>
 </head>
@@ -59,7 +62,7 @@
     if (isset($_POST['reply'])) {
         $response = $conn->real_escape_string($_POST['response']);
         $comment_id = intval($_POST['comment_id']);
-        $user_id = 1; 
+        $user_id = 1;
 
         $sql = "INSERT INTO comments (content, parent_id, user_id, created_at) 
                 VALUES ('$response', '$comment_id', '$user_id', NOW())";
@@ -70,7 +73,6 @@
         }
     }
 
-   
     $sql = "SELECT comment_id, content, created_at FROM comments WHERE parent_id IS NULL ORDER BY created_at DESC";
     $result = $conn->query($sql);
 
@@ -81,7 +83,6 @@
             echo '<p class="comment-text"><strong>Content:</strong> ' . htmlspecialchars($row["content"]) . '</p>';
             echo '<p class="comment-text"><strong>Created At:</strong> ' . date("d-M-Y h:i A", strtotime($row["created_at"])) . '</p>';
 
-            
             $reply_sql = "SELECT content, created_at FROM comments WHERE parent_id = " . $row['comment_id'];
             $reply_result = $conn->query($reply_sql);
 
@@ -94,7 +95,6 @@
                 }
             }
 
-            // Reply Form
             echo '<form action="comments.php" method="POST">
                     <textarea name="response" placeholder="Reply here..." required></textarea>
                     <input type="hidden" name="comment_id" value="' . $row['comment_id'] . '">
