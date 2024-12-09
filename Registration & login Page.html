@@ -69,10 +69,14 @@
     document.getElementById('registration-form').addEventListener('submit', function(event) {
         const email = document.getElementById('register-username').value;
         if (!validateEmail(email)) {
-            alert('Please enter a valid UoB email (e.g., username@beds.ac.uk).');
+            alert('Please enter a valid UoB email (e.g., 20241234@uob.edu.bh).');
             event.preventDefault(); // Prevent form submission
+        } else if (email === 'admin@uob.edu.bh') { // Check for admin email
+            event.preventDefault(); // Prevent default submission
+            window.location.href = 'admin-dashboard.php'; // Redirect to admin dashboard
         }
     });
     </script>
 </body>
 </html>
+  
