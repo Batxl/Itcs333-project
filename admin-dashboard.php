@@ -67,12 +67,6 @@ try {
             </ul>
             <ul class="bottom-link">
                 <li>
-                    <a href="admin-profile.php">
-                    <i class="fa-solid fa-user fa-lg" style="color: #ffffff; margin: 10px;"></i>
-                        <span class="links">Profile</span>
-                    </a>
-                </li>
-                <li>
                     <a href="logout.php">
                         <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff; margin: 10px"></i>
                         <span class="links">Logout</span>
