@@ -44,7 +44,6 @@
                         <tr>
                             <th>Room ID</th>
                             <th>Capacity</th>
-                            <th>Type</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -53,22 +52,21 @@
                         
                         include 'admin-database.php';
 
-
-                        $query = "SELECT room_id, capacity, type, date FROM reservations WHERE date < NOW() ORDER BY date DESC";
+                        // Query to fetch past bookings 
+                        $query = "SELECT ID, Capacity, Date FROM Room WHERE Date < NOW() ORDER BY Date DESC";
                         try {
                             $stmt = $pdo->query($query);
 
-
+                            // Fetch and display each row
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['room_id']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['capacity']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['type']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['date']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['ID']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['Capacity']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['Date']) . "</td>";
                                 echo "</tr>";
                             }
                         } catch (PDOException $e) {
-                            echo "<tr><td colspan='4'>Error fetching past bookings: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                            echo "<tr><td colspan='3'>Error fetching past bookings: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -77,5 +75,4 @@
         </div>
     </section>
 </body>
-</html>
-
+</html

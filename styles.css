@@ -1,16 +1,16 @@
 body {
-    background-color: #fff5f7; /* Soft pink background */
+    background-color: #f2f4f8; /* Subtle background */
     font-family: 'Arial', sans-serif;
 }
 
 h1 {
-    color: #d63384; /* Primary pink color for headings */
+    color: #007BFF; /* Primary color for headings */
     margin-bottom: 20px; /* Spacing below heading */
 }
 
 .card {
     border-radius: 15px;
-    background: linear-gradient(145deg, #ffffff, #ffe4e9); /* Pink gradient background */
+    background: linear-gradient(145deg, #ffffff, #f1f3f5); /* Gradient background */
     padding: 20px; /* Inner padding */
 }
 
@@ -26,7 +26,7 @@ h1 {
     width: 120px;
     height: 120px;
     border-radius: 50%; /* Circular image */
-    border: 3px solid #d63384; /* Pink border */
+    border: 3px solid #007BFF; /* Primary color border */
     object-fit: cover; /* Ensure proper image scaling */
     transition: transform 0.3s; /* Scaling effect */
 }
@@ -41,26 +41,23 @@ h1 {
     transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
 }
 
-/* Pink button styling */
 .btn-primary {
-    background-color: #FF69B4; /* Pink color */
-    color: white;
+    background-color: #007BFF; /* Primary button color */
+    color: white; /* Text color */
 }
 
 .btn-primary:hover {
-    background-color: #FF3385; /* Slightly darker pink for hover */
-    transform: translateY(-2px); 
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
 }
 
 .btn-success {
-    background-color: #FF69B4; /* Pink color */
-    color: white;
+    background-color: #28a745; /* Success button color */
 }
 
 .btn-success:hover {
-    background-color: #FF3385; /* Slightly darker pink for hover */
+    background-color: #218838; /* Darker shade on hover */
 }
-
 
 .form-group {
     margin: 15px 0; /* Consistent margin for form groups */
@@ -76,14 +73,14 @@ input[type="text"],
 input[type="email"] {
     width: 100%; /* Full width */
     padding: 12px; /* Increased padding for comfort */
-    border: 1px solid #f5c2e7; /* Pink border */
+    border: 1px solid #ced4da; /* Light border */
     border-radius: 5px; /* Rounded corners */
     transition: border-color 0.3s; /* Smooth border transition */
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus {
-    border-color: #d63384; /* Pink focus border */
+    border-color: #007BFF; /* Primary color on focus */
     outline: none; /* Remove default outline */
 }
 

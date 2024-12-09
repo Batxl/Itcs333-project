@@ -1,46 +1,5 @@
 <?php
 include 'analysis-database.php';
-
-try {
-
-    $sql = "
-        SELECT 
-            COUNT(DISTINCT room_id) AS total_rooms, 
-            SUM(CASE WHEN type = 'Lab' THEN 1 ELSE 0 END) AS lab_rooms,
-            SUM(CASE WHEN type = 'Class' THEN 1 ELSE 0 END) AS class_rooms
-        FROM reservations";
-    $stmt = $pdo->query($sql);
-    $roomStats = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    
-    $sqlPopular = "
-        SELECT room_id, COUNT(*) AS usage_count
-        FROM reservations
-        GROUP BY room_id
-        ORDER BY usage_count DESC";
-    $stmtPopular = $pdo->query($sqlPopular);
-    $popularRooms = $stmtPopular->fetchAll(PDO::FETCH_ASSOC);
-
-    
-    $sqlUsage = "
-        SELECT room_id, MONTH(date) AS month, COUNT(*) AS usage_count
-        FROM reservations
-        GROUP BY room_id, MONTH(date)
-        ORDER BY room_id, month";
-    $stmtUsage = $pdo->query($sqlUsage);
-    $roomUsageData = [];
-    $months = range(1, 12); 
-
-    while ($row = $stmtUsage->fetch(PDO::FETCH_ASSOC)) {
-        $room_id = $row['room_id'];
-        $month = $row['month'];
-        $usage_count = $row['usage_count'];
-        $roomUsageData[$room_id][$month] = $usage_count;
-    }
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
 ?>
 
 <!DOCTYPE html>
@@ -49,14 +8,14 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="analysis.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Analysis</title>
 </head>
 <body>
     <section class="dashboard">
         <div class="container">
-            <!-- Sidebar -->
+            <!-- Navigation Sidebar -->
             <nav>
                 <div class="menu-items">
                     <ul class="navLinks">
@@ -79,21 +38,26 @@ try {
             <!-- Dashboard -->
             <div class="stat-card">
                 <br><i class="fa-solid fa-list-ol fa-xl" style="color: #2F6690;"></i>
-                <br><h3><?php echo "Total Rooms: " . $roomStats['total_rooms']; ?></h3>
+                <br><h3><?php echo "Total Rooms: " . $roomStatus['total_rooms']; ?></h3>
             </div>
             <div class="stat-card">
                 <br><i class="fa-solid fa-list-check fa-xl" style="color: #1e304f;"></i>
-                <br><h3><?php echo "Lab Rooms: " . $roomStats['lab_rooms']; ?></h3>
+                <br><h3><?php echo "Booked Rooms: " . $roomStatus['booked_rooms']; ?></h3>
             </div>
             <div class="stat-card">
                 <br><i class="fa-solid fa-list fa-xl" style="color: #16425b;"></i>
-                <br><h3><?php echo "Class Rooms: " . $roomStats['class_rooms']; ?></h3>
+                <br><h3><?php echo "Available Rooms: " . $roomStatus['available_rooms']; ?></h3>
+            </div>
+            <div class="stat-card">
+                <br><i class="fa-solid fa-screwdriver-wrench fa-xl" style="color: #1e304f;"></i>
+                <br><h3><?php echo "Under Maintenance Rooms: " . $roomStatus['undermaintenance_rooms']; ?></h3>
             </div>
 
             <div class="booking-buttons">
                 <a href="pastbooking.php" class="booking-button">Past Bookings</a>
                 <a href="upcomingbooking.php" class="booking-button">Upcoming Bookings</a>
             </div>
+
 
             <!-- Popular Rooms -->
             <div class="chart-container" style="margin-top: 40px;">
@@ -111,16 +75,16 @@ try {
 
 <script>
 // Fetch data from PHP
-const roomIds = <?php echo json_encode(array_column($popularRooms, 'room_id')); ?>; 
-const usageCounts = <?php echo json_encode(array_column($popularRooms, 'usage_count')); ?>; 
-const roomUsageData = <?php echo json_encode($roomUsageData); ?>; 
-const roomUsageLabels = <?php echo json_encode($months); ?>; 
+const roomIds = <?php echo json_encode($roomIds); ?>;
+const usageCounts = <?php echo json_encode($usageCounts); ?>;
+const roomUsageData = <?php echo json_encode($roomUsageData); ?>;
+const roomUsageLabels = <?php echo json_encode($months); ?>;
 
 // Popular Rooms Bar Chart
 const popularRoomsData = {
-    labels: roomIds.map(room_id => `Room ${room_id}`), 
+    labels: roomIds.map(id => `Room ${id}`), 
     datasets: [{
-        label: 'Times Used',
+        label: 'Times Used', 
         data: usageCounts, 
         backgroundColor: '#2F6690',
         borderColor: '#fff',
@@ -130,23 +94,37 @@ const popularRoomsData = {
 
 const ctxPopularRooms = document.getElementById('popularRoomsChart').getContext('2d');
 const popularRoomsChart = new Chart(ctxPopularRooms, {
-    type: 'bar',
+    type: 'bar', 
     data: popularRoomsData,
     options: {
         responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        const roomIndex = tooltipItem.dataIndex;
+                        const timesUsed = usageCounts[roomIndex];
+                        return `Room ${roomIds[roomIndex]}: ${timesUsed} times used`; 
+                    }
+                }
+            }
+        },
         scales: {
             y: {
-                beginAtZero: true,
+                beginAtZero: true, 
             }
         }
     }
 });
 
-// Room Usage Line Chart
-const roomUsageDatasets = Object.keys(roomUsageData).map(room_id => ({
-    label: `Room ${room_id}`,
-    data: roomUsageData[room_id], 
-    borderColor: '#2F6690',
+//Room Usage Line Chart
+const roomUsageDatasets = Object.keys(roomUsageData).map(roomId => ({
+    label: `Room ${roomId}`, 
+    data: roomUsageData[roomId],
+    borderColor: '#2F6690', 
     fill: false,
     tension: 0.1
 }));
@@ -158,17 +136,38 @@ const roomUsageDataForChart = {
 
 const ctxRoomUsage = document.getElementById('roomUsageChart').getContext('2d');
 const roomUsageChart = new Chart(ctxRoomUsage, {
-    type: 'line',
+    type: 'line', 
     data: roomUsageDataForChart,
     options: {
         responsive: true,
+        plugins: {
+            legend: {
+                position: 'top', 
+                labels: {
+                    font: {
+                        size: 14, 
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        const roomId = tooltipItem.dataset.label;
+                        const month = roomUsageLabels[tooltipItem.dataIndex];
+                        const usage = tooltipItem.raw;
+                        return `${roomId} in month ${month}: ${usage} times used`;
+                    }
+                }
+            }
+        },
         scales: {
             y: {
-                beginAtZero: true,
+                beginAtZero: true, 
             }
         }
     }
 });
 </script>
+
 </body>
 </html>
