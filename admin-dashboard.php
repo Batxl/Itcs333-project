@@ -59,7 +59,7 @@ try {
                 </li>
                 
                 <li class="navList">
-                    <a href="#">
+                    <a href="comments.php">
                         <i class="fa-solid fa-comment fa-lg" style="color: #ffffff; margin: 10px;"></i>
                         <span class="links">Comments</span>
                     </a>
