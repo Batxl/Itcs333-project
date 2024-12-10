@@ -1,57 +1,72 @@
 <?php
 session_start();
-
-// Database connection (update with your credentials)
-$servername = "localhost";
-$username = "root";
-$password = ""; 
-$dbname = "project"; 
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Validate UoB email format
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^[a-zA-Z0-9._%+-]+@stu\.uob\.edu\.bh$/', $email)) {
-        echo "Invalid email format. Please use a UoB email (e.g., username@stu.uob.edu.bh).";
-        exit;
-    }
-
-    // Prepare and bind
-    $stmt = $conn->prepare("SELECT password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-
-    // Execute the query
-    $stmt->execute();
-    $stmt->store_result();
-
-    // Check if the user exists
-    if ($stmt->num_rows == 1) {
-        $stmt->bind_result($hashed_password);
-        $stmt->fetch();
-
-        // Verify the password
-        if (password_verify($password, $hashed_password)) {
-            // Successful login
-            $_SESSION['username'] = $email; // Store username in session
-            header("Location: dashboard.php"); // Redirect to a dashboard
-            exit();
-        } else {
-            echo "Incorrect password.";
-        }
-    } else {
-        echo "No user found with that email.";
-    }
-
-    $stmt->close();
-}
-
-$conn->close();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="process_login.php" method="POST">
+            <input type="email" name="email" required placeholder="UoB Email">
+            <input type="password" name="password" required placeholder="Password">
+            <button type="submit" name="login">Login</button>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="error"><?php echo htmlspecialchars($_SESSION['error']); ?></div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        </form>
+        <p>Don't have an account? <a href="register.php">Register here</a></p>
+    </div>
+</body>
+</html>
