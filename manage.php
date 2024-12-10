@@ -23,6 +23,12 @@
                         <span class="links">Manage Rooms</span>
                     </a>
                 </li>
+                <li class="navList active">
+                    <a href="managetable.php">
+                    <i class="fa-solid fa-file fa-lg" style="color: #ffffff; margin: 10px;"></i>
+                        <span class="links">Manage Table</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
