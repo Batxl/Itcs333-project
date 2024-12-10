@@ -147,7 +147,7 @@
 
 <script>
 function validateEmail(email) {
-    const regex = /^[a-zA-Z0-9._%+-]+@stu\.uob\.edu\.bh$/; // Updated regex for @stu.uob.edu.bh
+    const regex = /^[a-zA-Z0-9._%+-]+@stu\.uob\.edu\.bh$/; // Regex for UoB email
     return regex.test(email);
 }
 
@@ -158,21 +158,20 @@ document.getElementById('register-username').addEventListener('input', function(
         feedback.textContent = 'Please enter a valid UoB email (e.g., username@stu.uob.edu.bh).';
         feedback.style.color = 'red';
     } else {
-        feedback.textContent = '';
+        feedback.textContent = ''; // Clear feedback if valid
     }
 });
 
 document.getElementById('registration-form').addEventListener('submit', function(event) {
     const email = document.getElementById('register-username').value;
-    if (!validateEmail(email)) {
-        alert('Please enter a valid UoB email (e.g., username@stu.uob.edu.bh).');
-        event.preventDefault(); // Prevent form submission
-    } else if (email === 'admin@adm.uob.edu.bh') { // Check for admin email
-        event.preventDefault(); // Prevent default submission
-        window.location.href = 'admin-dashboard.php'; // Redirect to admin dashboard
-    }
-});
-</script>
-</body>
+    const feedback = document.getElementById('email-feedback');
 
-</html>
+    if (!validateEmail(email)) {
+        feedback.textContent = 'Please enter a valid UoB email (e.g., username@stu.uob.edu.bh).';
+        feedback.style.color = 'red';
+        event.preventDefault(); // Prevent form submission
+    } else {
+        feedback.textContent = ''; // Clear feedback if valid
+        // Optionally check for admin email
+        if (email === 'admin@adm.uob.edu.bh') {
+            event.preventDefault(); // Prevent default submission
