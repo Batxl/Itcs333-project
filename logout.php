@@ -17,7 +17,7 @@ session_destroy();
     <div class="logout-container">
         <h1>You are logged out</h1>
         <p>You have successfully logged out of the system.</p>
-        <a href="register.php" class="login-btn">Go to Login</a>
+        <a href="Registration-login-Page.html" class="login-btn">Go to Login</a>
     </div>
 </body>
 </html>
