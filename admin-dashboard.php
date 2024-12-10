@@ -1,5 +1,5 @@
 <?php
-include 'admin-database.php';
+include 'db_connection.php';
 
 try {
     // Fetch the total number of rooms, lab rooms, and class rooms
