@@ -1,24 +1,21 @@
 <?php
+
 include 'admin-database.php';
 
 try {
+    // SQL query to calculate total rooms
+    $sql = "SELECT 
+                COUNT(*) AS total_rooms,
+                SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) AS available_rooms,
+                SUM(CASE WHEN status = 'booked' THEN 1 ELSE 0 END) AS booked_rooms,
+                SUM(CASE WHEN status = 'under maintenance' THEN 1 ELSE 0 END) AS undermaintenance_rooms
+            FROM room";
 
-    $sql = "
-        SELECT 
-            COUNT(DISTINCT room_id) AS total_rooms, 
-            SUM(CASE WHEN type = 'Lab' THEN 1 ELSE 0 END) AS lab_rooms,
-            SUM(CASE WHEN type = 'Class' THEN 1 ELSE 0 END) AS class_rooms
-        FROM reservations";
-        
     $stmt = $pdo->query($sql);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-    $bookingSql = "
-        SELECT room_id AS ID, capacity AS Capacity, date AS Date
-        FROM reservations
-        WHERE date >= NOW()
-        ORDER BY date ASC";
+    // SQL query to fetch upcoming bookings
+    $bookingSql = "SELECT ID, Capacity, Date FROM Room WHERE Date >= NOW() ORDER BY Date ASC";
     $bookingStmt = $pdo->query($bookingSql);
     $bookings = $bookingStmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -60,8 +57,9 @@ try {
                         <span class="links">Analytics</span>
                     </a>
                 </li>
+                
                 <li class="navList">
-                    <a href="#">
+                    <a href="comments.php">
                         <i class="fa-solid fa-comment fa-lg" style="color: #ffffff; margin: 10px;"></i>
                         <span class="links">Comments</span>
                     </a>
@@ -70,7 +68,7 @@ try {
             <ul class="bottom-link">
                 <li>
                     <a href="logout.php">
-                        <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff; margin: 10px;"></i>
+                        <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff; margin: 10px"></i>
                         <span class="links">Logout</span>
                     </a>
                 </li>
@@ -83,7 +81,7 @@ try {
         <div class="container">
             <div class="overview">
                 <div class="title">
-                    <i class="fa-solid fa-gauge fa-2xl" style="color: #1e304f;"></i>
+                <i class="fa-solid fa-gauge fa-2xl" style="color: #1e304f;"></i>
                     <span class="text">Dashboard</span>
                 </div>
                 <div class="boxes">
@@ -92,44 +90,47 @@ try {
                         <br><p><?php echo "Total Rooms: " . $result['total_rooms']; ?></p>
                     </div>
                     <div class="box box2">
-                        <br><i class="fa-solid fa-flask fa-xl" style="color: #1e304f;"></i>
-                        <br><p><?php echo "Lab Rooms: " . $result['lab_rooms']; ?></p>
+                        <br><i class="fa-solid fa-list-check fa-xl" style="color: #1e304f;"></i>
+                        <br><p><?php echo "Booked Rooms: " . $result['booked_rooms']; ?></p>
                     </div>
                     <div class="box box3">
-                        <br><i class="fa-solid fa-chalkboard fa-xl" style="color: #16425b;"></i>
-                        <br><p><?php echo "Class Rooms: " . $result['class_rooms']; ?></p>
+                        <br><i class="fa-solid fa-list fa-xl" style="color: #16425b; margin-top=10px"></i>
+                        <br><p><?php echo "Available Rooms: " . $result['available_rooms']; ?></p>
                     </div>
-                </div>
+                    <div class="box box4">
+                        <br><i class="fa-solid fa-screwdriver-wrench fa-xl" style="color: #1e304f;"></i>
+                        <br><p><?php echo "Under Maintenance Rooms: " . $result['undermaintenance_rooms']; ?></p>
+                    </div>
+                </div> 
             </div>
 
-            <!-- Upcoming Bookings -->
-            <div class="upcoming-bookings">
-                <div class="title">
-                    <i class="fa-solid fa-calendar fa-2xl" style="color: #1e304f;"></i>
-                    <span class="text">Upcoming Bookings</span>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Room ID</th>
-                            <th>Capacity</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($bookings as $booking): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($booking['ID']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['Capacity']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['Date']); ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+        <!-- Upcoming Bookings -->
+        <div class="upcoming-bookings">
+            <div class="title">
+            <i class="fa-solid fa-calendar fa-2xl" style="color: #1e304f;"></i>
+                <span class="text">Upcoming Bookings</span>
             </div>
+            <table>
+            <thead>
+            <tr>
+                <th>Room ID</th>
+                <th>Capacity</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($bookings as $booking): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($booking['ID']); ?></td>
+                <td><?php echo htmlspecialchars($booking['Capacity']); ?></td>
+                <td><?php echo htmlspecialchars($booking['Date']); ?></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
+
         </div>
     </section>
 </body>
 </html>
-
-
