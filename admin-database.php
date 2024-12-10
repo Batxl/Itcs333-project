@@ -2,8 +2,8 @@
 
 $servername = "localhost"; 
 $username = "root";
-$password = "root"; 
-$dbname = "rooms";
+$password = ""; 
+$dbname = "project";
 
 try {
     // Create a PDO connection
