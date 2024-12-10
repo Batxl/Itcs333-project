@@ -54,6 +54,12 @@ try {
                 </li>
             </ul>
             <ul class="bottom-link">
+            <li>
+                    <a href="comments.php">
+                        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff; margin: 10px;"></i>
+                        <span class="links">Comment</span>
+                    </a>
+                </li>
                 <li>
                     <a href="logout.php">
                         <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff; margin: 10px;"></i>
