@@ -1,14 +1,17 @@
 <?php
-$servername = "localhost";
+
+$servername = "localhost"; 
 $username = "root";
 $password = ""; 
-$dbname = "project"; 
+$dbname = "project";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+try {
+    // Create a PDO connection
+    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    exit; 
 }
 ?>
-
-
