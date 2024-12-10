@@ -3,30 +3,46 @@ include 'admin-database.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $id = htmlspecialchars(trim($_POST['room_id']));
+    $room_id = htmlspecialchars(trim($_POST['room_id']));
     $capacity = !empty($_POST['capacity']) ? intval($_POST['capacity']) : null;
-    $status = htmlspecialchars(trim($_POST['status']));
-    $added_by = htmlspecialchars(trim($_POST['added_by']));
+    $type = htmlspecialchars(trim($_POST['type']));
+    $user_id = htmlspecialchars(trim($_POST['user_id']));
+    $equipment = isset($_POST['equipment']) ? $_POST['equipment'] : [];
 
-    if (empty($id) || empty($capacity) || empty($status) || empty($added_by)) {
+
+    if (empty($room_id) || empty($capacity) || empty($type) || empty($user_id)) {
         echo "Error: All fields are required.";
         exit;
     }
 
     try {
-        $sql = "INSERT INTO room (ID, Capacity, Status, Added_by, Date, Times_Used) 
-                VALUES (:id, :capacity, :status, :added_by, NOW(), 0)";
+
+        $sql = "INSERT INTO room (room_id, capacity, type, user_id) 
+                VALUES (:room_id, :capacity, :type, :user_id)";
         $stmt = $pdo->prepare($sql);
 
         $stmt->execute([
-            ':id' => $id,
+            ':room_id' => $room_id,
             ':capacity' => $capacity,
-            ':status' => $status,
-            ':added_by' => $added_by,
+            ':type' => $type,
+            ':user_id' => $user_id,
         ]);
 
-        header("Location: manage.php?message=Room added successfully");
+
+        foreach ($equipment as $equip) {
+            $equip_sql = "INSERT INTO equipment (equipment_name, room_id) 
+                         VALUES (:equipment_name, :room_id)";
+            $equip_stmt = $pdo->prepare($equip_sql);
+            $equip_stmt->execute([
+                ':equipment_name' => $equip,
+                ':room_id' => $room_id,
+            ]);
+        }
+
+
+        header("Location: manage.php?message=Room and equipment booked successfully");
         exit;
+
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -34,3 +50,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "Invalid request method.";
 }
 ?>
+
