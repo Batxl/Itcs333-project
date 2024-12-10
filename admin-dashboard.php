@@ -47,13 +47,7 @@ try {
                     </a>
                 </li>
                 <li class="navList">
-                    <a href="analysis.php">
-                        <i class="fa-solid fa-chart-simple fa-lg" style="color: #ffffff; margin: 10px"></i>
-                        <span class="links">Analytics</span>
-                    </a>
-                </li>
-                <li class="navList">
-                    <a href="roomtable.php">
+                    <a href="managetable.php">
                     <i class="fa-solid fa-calendar fa-lg" style="color: #ffffff; margin:10px"></i>
                         <span class="links">Rooms</span>
                     </a>
