@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php';
+include 'admin-database.php';
 
 // Fetch room data along with the equipment column directly from the room table
 $sql = "SELECT room_id, capacity, type, user_id, equipment 
