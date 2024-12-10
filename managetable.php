@@ -39,7 +39,7 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .room-table-container .title .text {
             font-size: 1.5rem;
-            color: #1e304f;
+            color: #5E548E;
             font-weight: bold;
         }
 
@@ -56,7 +56,7 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         table th {
-            background-color: #1e304f;
+            background-color: #5E548E;
             color: #ddd;
             font-weight: bold;
         }
