@@ -42,7 +42,7 @@
     <p>Please choose an option below:</p>
     
     <a href="register.php" class="button">Register</a>
-    <a href="login.php" class="button">Login</a>
+    <a href="/PROJECT333/login.php" class="button">Login</a>
 
     <div class="footer">
         <p>&copy; 2024 Room Booking System</p>
