@@ -180,7 +180,7 @@
                     </a>
                 </li>
                 <li class="navList">
-                    <a href="notification.php">
+                    <a href="Notifications.php">
                         <i class="fa-solid fa-bell fa-lg" style="color: #ffffff; margin: 10px"></i>
                         <span class="links">Notification</span>
                     </a>
