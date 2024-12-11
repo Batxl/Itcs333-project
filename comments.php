@@ -1,6 +1,6 @@
-<?php
+<?php 
 session_start();
-include 'db_connection.php';
+include 'admin-database.php';
 
 $successMessage = '';
 $errorMessage = '';
@@ -8,27 +8,20 @@ $errorMessage = '';
 $successMessage = isset($_GET['successMessage']) ? $_GET['successMessage'] : '';
 $errorMessage = isset($_GET['errorMessage']) ? $_GET['errorMessage'] : '';
 
+
 $room = [];
 $sql = "SELECT room_id FROM room";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $room[] = $row['room_id'];
-    }
-}
+$stmt = $pdo->query($sql);
+$room = $stmt->fetchAll(PDO::FETCH_COLUMN); 
 
 $comments = [];
 foreach ($room as $room_id) {
     $sql = "SELECT content FROM comments WHERE room_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $room_id);
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(1, $room_id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
-    $comments[$room_id] = $result->fetch_all(MYSQLI_ASSOC);
+    $comments[$room_id] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +31,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comment Section</title>
     <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
             background-color: #E7ECEF;
             color: #274C77;
@@ -65,7 +58,7 @@ $conn->close();
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .form-section {
-            align-self: flex-start;
+         align-self: flex-start;
         }
         .room {
             background-color: #ffffff;
@@ -128,6 +121,7 @@ $conn->close();
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
     </style>
 </head>
 <body>
