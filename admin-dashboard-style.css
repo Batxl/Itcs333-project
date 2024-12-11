@@ -13,14 +13,14 @@ body {
     width: 100%;
 }
 
-
+/* Navigation Sidebar */
 nav {
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 250px;
-    background-color: #9F86C0;
+    background-color: #274C77;
     padding: 20px 10px;
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@ nav .menu-items li {
 
 nav .menu-items li a {
     text-decoration: none;
-    color: white;
+    color: #E7ECEF;
     display: flex;
     align-items: center;
     padding: 12px 20px;
@@ -53,10 +53,9 @@ nav .menu-items li a {
 
 nav .menu-items li.active a,
 nav .menu-items li a:hover {
-    background-color: #E0B1CB;
-    color: #5E548E;
+    background-color: #6096BA;
+    color: #A3CEF1;
 }
-
 
 /* Dashboard Layout */
 .dashboard {
@@ -81,7 +80,7 @@ nav .menu-items li a:hover {
 .container .title .text {
     font-size: 24px;
     font-weight: 600;
-    color: #5E548E;
+    color: #274C77;
     margin-left: 10px;
 }
 
@@ -101,10 +100,49 @@ nav .menu-items li a:hover {
     max-width: 250px;
     padding: 15px 20px;
     border-radius: 10px;
-    background-color: #E0B1CB;
+    background-color: #A3CEF1;
     text-align: center;
     transition: all 0.3s ease;
     box-sizing: border-box;
+}
+
+/* Table Section */
+.upcoming-bookings {
+    margin-top: 40px;
+    background-color: #E7ECEF;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.upcoming-bookings h2 {
+    font-size: 24px;
+    color: #274C77;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #E7ECEF;
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    font-size: 16px;
+    color: #8B8C89;
+    border-bottom: 1px solid #8B8C89;
+}
+
+table th {
+    background-color: #274C77;
+    color: #E7ECEF;
 }
 
 /* Responsive Design */
