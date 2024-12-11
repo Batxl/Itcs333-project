@@ -26,8 +26,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     }else{
         echo "Error: " .$sql . "<br>" .$conn->error;
     }
+} 
+   $conn->close();
 
-}    $conn->close();
 
 
 ?>
@@ -89,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <td><?php echo $row ['room_id']   ?></td>
                     <td><?php echo $row ['reservation_date']   ?></td>
                   
-                    <td> <a href="http://localhost:1080/Itcs333-project-2/unbook.php?id=<?php echo $row['room_id']?>" >Unbook</a></td>
+                    <td> <a href="http://localhost:1080/Itcs333-project-2/unbook.php?id=<?php echo $row['room_id']?>" >Unbooked</a></td>
                       
                     
                 </tr>
@@ -117,6 +118,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     
     
     <br>
-   <a href="roomnew.php">Back</a>
+   <a href="Main page.php">Back</a>
     </body>
 </html>

@@ -1,8 +1,8 @@
 <?php
-include 'db_connection.php';
+include 'admin-database.php';
 
 try {
-   
+    // Fetch the total number of rooms, lab rooms, and class rooms
     $sql = "
         SELECT 
             COUNT(DISTINCT room_id) AS total_rooms, 
@@ -47,19 +47,19 @@ try {
                     </a>
                 </li>
                 <li class="navList">
-                    <a href="analysis.php">
-                        <i class="fa-solid fa-chart-simple fa-lg" style="color: #ffffff; margin: 10px"></i>
-                        <span class="links">Analytics</span>
-                    </a>
-                </li>
-                <li class="navList">
                     <a href="managetable.php">
-                    <i class="fa-solid fa-table fa-lg" style="color: #ffffff; margin:10px;"></i>
+                    <i class="fa-solid fa-calendar fa-lg" style="color: #ffffff; margin:10px"></i>
                         <span class="links">Rooms</span>
                     </a>
                 </li>
             </ul>
             <ul class="bottom-link">
+            <li>
+                    <a href="comments.php">
+                        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff; margin: 10px;"></i>
+                        <span class="links">Comment</span>
+                    </a>
+                </li>
                 <li>
                     <a href="logout.php">
                         <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff; margin: 10px;"></i>
@@ -72,64 +72,29 @@ try {
 
     <!--Dashboard-->
     <section class="dashboard">
-    <div class="container">
-        <div class="overview">
-            <div class="title">
-                <i class="fa-solid fa-gauge fa-2xl" style="color: #1e304f;"></i>
-                <span class="text">Dashboard</span>
+        <div class="container">
+                <!--welcome message-->
+                <h1>Welcome to Admin Page</h1>
+            <div class="overview">
+                <div class="title">
+                    <i class="fa-solid fa-gauge fa-2xl" style="color: #1e304f;"></i>
+                    <span class="text">Dashboard</span>
+                </div>
+                <div class="boxes">
+                    <div class="box box1">
+                        <br><i class="fa-solid fa-list-ol fa-xl" style="color: #1e304f;"></i>
+                        <br><p><?php echo "Total Rooms: " . $result['total_rooms']; ?></p>
+                    </div>
+                    <div class="box box2">
+                        <br><i class="fa-solid fa-chalkboard fa-xl" style="color: #16425b;"></i>
+                        <br><p><?php echo "Lab Rooms: " . $result['lab_rooms']; ?></p>
+                    </div>
+                    <div class="box box3">
+                        <br><i class="fa-solid fa-chalkboard fa-xl" style="color: #16425b;"></i>
+                        <br><p><?php echo "Class Rooms: " . $result['class_rooms']; ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="boxes">
-                <div class="box box1">
-                    <br><i class="fa-solid fa-list-ol fa-xl" style="color: #1e304f;"></i>
-                    <br><p><?php echo "Total Rooms: " . $result['total_rooms']; ?></p>
-                </div>
-                <div class="box box2">
-                    <br><i class="fa-solid fa-chalkboard fa-xl" style="color: #16425b;"></i>
-                    <br><p><?php echo "Lab Rooms: " . $result['lab_rooms']; ?></p>
-                </div>
-                <div class="box box3">
-                    <br><i class="fa-solid fa-chalkboard fa-xl" style="color: #16425b;"></i>
-                    <br><p><?php echo "Class Rooms: " . $result['class_rooms']; ?></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <div class="upcoming-bookings">
-                <h2>Upcoming Bookings</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Reservation ID</th>
-                            <th>Room ID</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        
-                        include 'admin-database.php';
-
- 
-                        $query = "SELECT reservation_id,room_id,reservation_date FROM reservations WHERE reservation_date < NOW() ORDER BY reservation_date DESC";
-                        try {
-                            $stmt = $pdo->query($query);
-
-
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['reservation_id']) . "</td>"; 
-                                echo "<td>" . htmlspecialchars($row['room_id']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['reservation_date']) . "</td>";
-                                echo "</tr>";
-                            }
-                        } catch (PDOException $e) {
-                            echo "<tr><td colspan='4'>Error fetching upcoming bookings: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>    
         </div>
     </section>
 </body>

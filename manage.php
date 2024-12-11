@@ -3,130 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="manageroom.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Manage Rooms</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    width: 100%;
-    background-color: #f4f3ee;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-}
-
-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 250px;
-    background-color: #274C77;
-    padding: 20px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
-nav .menu-items {
-    margin-top: 30px;
-    list-style: none;
-}
-
-nav .menu-items li {
-    margin-bottom: 20px;
-}
-
-nav .menu-items li a {
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    border-radius: 25px;
-    transition: background-color 0.3s;
-}
-
-.dashboard {
-    margin-left: 250px;
-    padding: 40px;
-    background-color: #f4f3ee;
-    min-height: 100vh;
-}
-
-.manage-rooms-container {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #E7ECEF;
-    border-radius: 12px;
-    color: #274C77;
-}
-
-.form-section {
-    margin-bottom: 40px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    color: #274C77;
-}
-
-.form-section h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #274C77; 
-    margin-bottom: 20px;
-    border-bottom: 2px solid #274C77;
-    padding-bottom: 10px;
-}
-
-.form-section form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #6096BA; 
-}
-
-.form-section form input,
-.form-section form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #f9f9f9;
-}
-
-.form-section form input:focus,
-.form-section form select:focus {
-    border-color: #274C77; 
-    outline: none;
-}
-
-.form-section form button {
-    width: 100%;
-    padding: 12px;
-    background-color: #A3CEF1; 
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.form-section form button:hover {
-    background-color: #A3CEF1;
-    color: #6096BA;
-}
-
-        </style>
 </head>
 <body>
     <nav>
@@ -142,6 +21,12 @@ nav .menu-items li a {
                     <a href="manage.php">
                     <i class="fa-solid fa-file fa-lg" style="color: #ffffff; margin: 10px;"></i>
                         <span class="links">Manage Rooms</span>
+                    </a>
+                </li>
+                <li class="navList active">
+                    <a href="managetable.php">
+                    <i class="fa-solid fa-file fa-lg" style="color: #ffffff; margin: 10px;"></i>
+                        <span class="links">Manage Table</span>
                     </a>
                 </li>
             </ul>
@@ -169,12 +54,15 @@ nav .menu-items li a {
             </select>
 
 
+            <label for="user_id">User ID</label>
+            <input type="text" id="user_id" name="user_id" placeholder="Enter Your User ID" required>
+
+
             <label for="equipment">Equipment</label>
             <select id="equipment" name="equipment">
-                <option value="None">None</option>
-                <option value="Switch">Switch</option>
-                <option value="Router">Router</option>
-                <option value="Computer">Computer</option>
+                <option value="switch">Switch</option>
+                <option value="router">Router</option>
+                <option value="computer">Computer</option>
             </select>
 
             <button type="submit">Add Room</button>
@@ -202,13 +90,15 @@ nav .menu-items li a {
             </select>
 
             <label>Equipment</label>
-            <select id="new_equipment" name="new_equipment">
-            <option value="None">None</option>
-            <option value="Computer">Computer</option>
-            <option value="Router">router</option>
-            <option value="Switch">switch</option>
+            <select id="new_equipment" name="new_equiemnet">
+            <option value="computer">computer</option>
+            <option value="router">router</option>
+            <option value="switch">switch</option>
 
             </select>
+
+            <label>Edited by</label>
+            <input type="number" id="new_user_id" name="new_user_id" placeholder="Edited by">
 
 
         <button type="submit">Submit Changes</button>
@@ -227,6 +117,6 @@ nav .menu-items li a {
                 </form>
             </div>
         </div>
-</section>
+    </section>
 </body>
 </html>

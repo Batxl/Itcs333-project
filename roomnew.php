@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1 style="text-align: center;">Boohing Room</h1>
+    <h1 style="text-align: center;">Book Room</h1>
 
     
 
@@ -26,21 +26,20 @@
                 <th scope="col">type</th>
                 <th scope="col">capacity</th>
                 <th scope="col">equipment</th>
-                <!--<th scope="col">date</th>
-                <th scope="col">time</th>-->
+        
                  <th scope="col">more</th>
             </tr>
             </thead>
             <tbody>
                 <?php
-               include 'db_connection.php';
-               
-                  
+              include 'db_connection.php';
+            
+
                    if($conn->connect_error){
                        die("Connection Failed:" . $conn->connect_error);
 
-                    }
-                    $sql = "SELECT * FROM room";
+                    } 
+                    $sql = "SELECT * FROM room ";
                     $result = $conn-> query($sql);
                    
                     if($result-> num_rows > 0) {
@@ -51,7 +50,7 @@
                     <td><?php echo $row ['type']   ?></td>
                     <td><?php echo $row ['Capacity']   ?></td>
                     <td><?php echo $row ['equipment']   ?></td>
-                    <td> <a href="bookingform.php"<?php echo $row['room_id']?>>Book Room</a></td>
+                    <td> <a href="http://localhost:1080/Itcs333-project-2/bookingform.php?id=<?php echo $row['room_id']?>" >Book Room</a></td>
                       
                     
                 </tr>

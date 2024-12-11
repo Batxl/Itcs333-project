@@ -22,8 +22,8 @@
         <h2>Check Booking Availability</h2>
        
         <form action="bookdate.php" method="post">
-                    <label for="name">Room id</label>
-                    <input type="int" name="room_id" id="room_id" required>
+                    <!--<label for="name">Room id</label>
+                    <input type="int" name="room_id" id="room_id" required>-->
 
                     <label for="name">Booking date</label>
                     <input type="datetime-local" name="reservation_date" id="reservation_date" required>
@@ -31,9 +31,9 @@
                     
                   
 
-                    <button type="submit">Book Now</button>
+                    <button type="submit" a href="bookdate">Book Now</button>
                    
-                    <a href="roomnew.php">Back</a>
+                    <a href="Main page.php">Back</a>
 
                 </form>
             </div>

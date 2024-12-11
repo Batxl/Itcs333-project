@@ -86,6 +86,11 @@
     
 <!--display room data in table-->
 
+<h1 style="text-align: center;">Book Room</h1>
+
+    
+
+
 <div class="container">
 
 <div class="row">
@@ -98,38 +103,31 @@
                 <th scope="col">type</th>
                 <th scope="col">capacity</th>
                 <th scope="col">equipment</th>
-                <th scope="col">date</th>
-                <th scope="col">time</th>
+        
                  <th scope="col">more</th>
             </tr>
             </thead>
             <tbody>
                 <?php
-                 $conn= mysqli_connect('localhost', 'root', '', 'room');
-                 
+              include 'db_connection.php';
+            
+
                    if($conn->connect_error){
                        die("Connection Failed:" . $conn->connect_error);
 
-                    }
-                    $sql = "SELECT * FROM rooms";
+                    } 
+                    $sql = "SELECT * FROM room ";
                     $result = $conn-> query($sql);
                    
                     if($result-> num_rows > 0) {
                         while($row= $result->fetch_assoc()){
                             ?>
                             <tr>
-                    <td><?php echo $row ['id']   ?></td>
+                    <td><?php echo $row ['room_id']   ?></td>
                     <td><?php echo $row ['type']   ?></td>
-                    <td><?php echo $row ['capacity']   ?></td>
+                    <td><?php echo $row ['Capacity']   ?></td>
                     <td><?php echo $row ['equipment']   ?></td>
-
-                     <th > <label for="name?id=<?php echo $row ['id']?>"></label>
-                    <input type="date" name="date" id="date" required></th> 
-
-                    <th>  <label for="time?id=<?php echo $row['id']?>"></label>
-                    <input type="time" name="time" id="time" required></th>
-
-                    <td> <a href="http://localhost:1080/Itcs333-project-2/booking.php?id=<?php echo $row['id']?>" >Booking Room</a></td>
+                    <td> <a href="http://localhost:1080/Itcs333-project-2/bookingform.php?id=<?php echo $row['room_id']?>" >Book Room</a></td>
                       
                     
                 </tr>
@@ -147,11 +145,6 @@
 </div>
 </div>
 
-
-
-    </div>
-    <footer>
-        
-    </footer>
 </body>
 </html>
+
