@@ -30,7 +30,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
    $conn->close();
 
 
-
 ?>
 
 <!DOCTYPE html>
@@ -49,14 +48,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <body>  
 
-
-
-
-
 <h1 style="text-align: center;">Reservations</h1>
-
-    
-
 
 <div class="container">
 
@@ -90,7 +82,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <td><?php echo $row ['room_id']   ?></td>
                     <td><?php echo $row ['reservation_date']   ?></td>
                   
-                    <td> <a href="http://localhost:1080/Itcs333-project-2/unbook.php?id=<?php echo $row['room_id']?>" >Unbooked</a></td>
+                    <!--<td> <a href="http://localhost:1080/Itcs333-project-2/unbook.php?id=<?php echo $row['room_id']?>" >Unbooked</a></td>-->
+                    <td> <a href="unbook.php?id=<?php echo $row['room_id']?>" >Unbooked</a></td>
                       
                     
                 </tr>
@@ -107,7 +100,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     </div>
 </div>
 </div>
-
 
 
     
