@@ -67,6 +67,7 @@
         <a href="admin-dashboard.php">Admin</a>
         <a href="profile.html">Profile</a>
         <a href="notifications.php">Notifications</a>
+        <a href="comments.php">comments</a>
     </nav>
     <div class="container">
         <h2> <?php include 'roomtable.php'; ?></h2>
