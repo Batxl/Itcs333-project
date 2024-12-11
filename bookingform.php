@@ -31,7 +31,7 @@
                     
                   
 
-                    <button type="submit" a href="bookdate">Book Now</button>
+                    <button type="submit" a href="bookdat.php">Book Now</button>
                    
                     <a href="Main page.php">Back</a>
 
