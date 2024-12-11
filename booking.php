@@ -12,16 +12,17 @@
           window.onunload=function(){null;}
           </script>
         
-        <link rel="stylesheet" href="bookingRoom.css">
+        <link rel="stylesheet" href="bookingc.css">
     </head>
     <body>
+        <!--Book Room-->
         
     <div class="background">
    <div class="booking-form">
     <div class="col-lg-12 bg-white shadow p-4 rounded">
-        <h2>Check Booking Availability</h2>
+        <h2>Book The Room</h2>
        
-        <form action="index1.php" method="post">
+        <form action="bookingdata.php" method="post">
                     <label for="name">Name</label>
                     <input type="text" name="name" id="name" required>
 
@@ -33,7 +34,7 @@
 
                     <button type="submit">Book Now</button>
                    
-                    <a href="rtable.php">Back</a>
+                    <a href="roomtable.php">Back</a>
 
                 </form>
             </div>

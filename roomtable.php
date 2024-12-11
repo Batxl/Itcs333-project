@@ -18,7 +18,7 @@
 
 <div class="row">
     <div class="col-md-8">
-        <table action="roomindex.php"  class="table table-hover table-responsive table-primary">
+        <table action="roomdata.php"  class="table table-hover table-responsive table-primary">
             <thead class="table-warning">
 
             <tr>
@@ -57,7 +57,7 @@
                     <th>  <label for="time?id=<?php echo $row['id']?>"></label>
                     <input type="time" name="time" id="time" required></th>
 
-                    <td> <a href="http://localhost:1080/project.booking/booking-room.php?id=<?php echo $row['id']?>" >Booking Room</a></td>
+                    <td> <a href="http://localhost:1080/Itcs333-project-2/booking.php?id=<?php echo $row['id']?>" >Booking Room</a></td>
                       
                     
                 </tr>

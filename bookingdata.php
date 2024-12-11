@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
     $sql = "INSERT INTO `booking`(`name`, `email`) 
     VALUES ('$name','$email')";
-
+     //if the room reservation is successful
     if($conn->query($sql)==TRUE){
         echo "Booking Successfully";
       
@@ -48,7 +48,9 @@ $conn->close();
 
 ?>
 <br>
-   <a href="rtable.php">Back</a>
+   <a href="roomtable.php">Back To Home Page</a>
+  
+
     </body>
 </html>
 
