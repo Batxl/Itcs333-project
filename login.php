@@ -1,37 +1,72 @@
 <?php
-require_once 'db_connection.php'; // Include PDO connection
-$error = '';
-
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-if (isset($_SESSION['db_error'])) {
-    $error = $_SESSION['db_error'];
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $error == '') {
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
-
-    try {
-        $stmt = $pdo->prepare("SELECT id, email, password_hash FROM users WHERE email = :email");
-        $stmt->bindparam(':email', $email);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($password, $user['password_hash'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['email'] = $user['email'];
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $error = "Invalid email or password.";
-        }
-    } catch (PDOException $e) {
-        $error = "An error occurred. Please try again later.";
-    }
-}
-
-
-include 'includes/login_form.php';
+session_start();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="process_login.php" method="POST">
+            <input type="email" name="email" required placeholder="UoB Email">
+            <input type="password" name="password" required placeholder="Password">
+            <button type="submit" name="login">Login</button>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="error"><?php echo htmlspecialchars($_SESSION['error']); ?></div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        </form>
+        <p>Don't have an account? <a href="register.php">Register here</a></p>
+    </div>
+</body>
+</html>

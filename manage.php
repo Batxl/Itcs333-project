@@ -60,7 +60,6 @@
 
             <label for="equipment">Equipment</label>
             <select id="equipment" name="equipment">
-                <option value="no_equipment">No equipment</option>
                 <option value="switch">Switch</option>
                 <option value="router">Router</option>
                 <option value="computer">Computer</option>
@@ -92,7 +91,6 @@
 
             <label>Equipment</label>
             <select id="new_equipment" name="new_equiemnet">
-            <option value="no_equipment">No equipment</option>
             <option value="computer">computer</option>
             <option value="router">router</option>
             <option value="switch">switch</option>

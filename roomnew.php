@@ -26,22 +26,15 @@
                 <th scope="col">type</th>
                 <th scope="col">capacity</th>
                 <th scope="col">equipment</th>
-                <th scope="col">date</th>
-                <th scope="col">time</th>
+                <!--<th scope="col">date</th>
+                <th scope="col">time</th>-->
                  <th scope="col">more</th>
             </tr>
             </thead>
             <tbody>
                 <?php
                include 'db_connection.php';
-                 //$conn= mysqli_connect('localhost', 'root', '', 'project');
-                 //$sql = "
-                           // SELECT room_id, type, capacity, equipment, 
-                                  // IFNULL(GROUP_CONCAT(c.content SEPARATOR '<br>')
-                            //FROM room 
-                            
-                            //GROUP BY room_id
-                        //";
+               
                   
                    if($conn->connect_error){
                        die("Connection Failed:" . $conn->connect_error);
@@ -59,11 +52,7 @@
                     <td><?php echo $row ['Capacity']   ?></td>
                     <td><?php echo $row ['equipment']   ?></td>
 
-                     <!--<th > <label for="name?id=<?php echo $row ['id']?>"></label>
-                    <input type="date" name="date" id="date" required></th> 
-
-                    <th>  <label for="time?id=<?php echo $row['id']?>"></label>
-                    <input type="time" name="time" id="time" required></th>-->
+                
 
                     <td> <a href="http://localhost:1080/Itcs333-project-2/booking.php?id=<?php echo $row['id']?>" >Booking Room</a></td>
                       
