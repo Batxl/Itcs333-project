@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Redirect based on user role
                 if (strpos($email, '@stu.uob.edu.bh') !== false) {
-                    header("Location:http://localhost/PROJECT333/index.php");
+                    header("Location:http://localhost/11/index.php");
                     exit();
                 } elseif (strpos($email, '@admin.uob.edu.bh') !== false) {
                     header("Location: http://localhost/PROJECT333/admin-dashboard.php");
