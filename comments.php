@@ -1,137 +1,168 @@
+<?php 
+session_start();
+include 'db_connection.php';
+
+$successMessage = '';
+$errorMessage = '';
+
+$successMessage = isset($_GET['successMessage']) ? $_GET['successMessage'] : '';
+$errorMessage = isset($_GET['errorMessage']) ? $_GET['errorMessage'] : '';
+
+
+$room = [];
+$sql = "SELECT room_id FROM room";
+$stmt = $pdo->query($sql);
+$room = $stmt->fetchAll(PDO::FETCH_COLUMN); 
+
+$comments = [];
+foreach ($room as $room_id) {
+    $sql = "SELECT content FROM comments WHERE room_id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(1, $room_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $comments[$room_id] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments</title>
+    <title>Comment Section</title>
     <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #fff5f8;
-            color: #333;
+            background-color: #E7ECEF;
+            color: #274C77;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        h1 {
-            text-align: center;
-            color: #ff4f6d;
-        }
-        .comment, .reply {
+        h1, h2 {
+            color: #274C77;
             margin-bottom: 20px;
-            border: 1px solid #ff8fa3;
-            padding: 15px;
-            border-radius: 10px;
-            background-color: #ffe5eb;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .reply {
-            margin-left: 20px;
-            background-color: #ffc2d1;
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
         }
-        .comment-text, .reply-text {
-            margin: 5px 0;
+        .comments-section, .form-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #A3CEF1;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .comment-footer {
-            font-size: 14px;
-            color: #777;
+        .form-section {
+         align-self: flex-start;
         }
-        .comment .comment-footer a {
-            color: #ff4f6d;
-            text-decoration: none;
-        }
-        .comment .comment-footer a:hover {
-            text-decoration: underline;
-        }
-        textarea {
-            width: 100%;
+        .room {
+            background-color: #ffffff;
+            border: 1px solid #6096BA;
+            border-radius: 4px;
+            margin-bottom: 10px;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ff8fa3;
-            border-radius: 10px;
+        }
+        .room-id {
+            font-weight: bold;
+            color: #274C77;
+            margin-bottom: 5px;
+        }
+        .comment {
+            background-color: #E7ECEF;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-top: 5px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            color: #274C77;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #6096BA;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
-            padding: 10px 15px;
-            background-color: #ff4f6d;
-            color: #fff;
+            background-color: #274C77;
+            color: #E7ECEF;
+            padding: 10px;
             border: none;
-            border-radius: 10px;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #ff8fa3;
+            background-color: #6096BA;
         }
+        .message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Comments Section</h1>
+    <h1>Comment Section</h1>
 
-    <?php
-    session_start();
+    <?php if ($successMessage): ?>
+        <div class="message success-message"><?php echo htmlspecialchars($successMessage); ?></div>
+    <?php endif; ?>
+    <?php if ($errorMessage): ?>
+        <div class="message error-message"><?php echo htmlspecialchars($errorMessage); ?></div>
+    <?php endif; ?>
 
-    if (isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id']; // Fetch the user_id from session
-    } else {
-        $user_id = 'Anonymous'; // Or any other default value if not logged in
-    }
+    <div class="container">
+        <div class="comments-section">
+            <h2>Comments by Room</h2>
+            <?php foreach ($room as $room_id): ?>
+                <div class="room">
+                    <div class="room-id">Room ID: <?php echo htmlspecialchars($room_id); ?></div>
+                    <?php if (isset($comments[$room_id]) && count($comments[$room_id]) > 0): ?>
+                        <?php foreach ($comments[$room_id] as $comment): ?>
+                            <div class="comment"><?php echo htmlspecialchars($comment['content']); ?></div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="comment">No comments yet.</div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
-    include 'db_connection.php';
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Handle new replies
-    if (isset($_POST['reply'])) {
-        $response = $conn->real_escape_string($_POST['response']);
-        $comment_id = intval($_POST['comment_id']);
-        $user_id = 1;  // Assuming a logged-in user or mock ID for now
-
-        $sql = "INSERT INTO comments (content, parent_id, user_id, created_at) 
-                VALUES ('$response', '$comment_id', '$user_id', NOW())";
-        if ($conn->query($sql) === TRUE) {
-            echo "<p style='color: green;'>Reply posted successfully!</p>";
-        } else {
-            echo "<p style='color: red;'>Error: " . $conn->error . "</p>";
-        }
-    }
-
-    // Fetch comments
-    $sql = "SELECT room_id, comment_id, content, created_at, user_id FROM comments WHERE parent_id IS NULL ORDER BY created_at DESC";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo '<div class="comment">';
-            echo '<p class="comment-text"><strong>User ID:</strong> ' . ($row["user_id"] ? htmlspecialchars($row["user_id"]) : 'Anonymous') . '</p>';
-            echo '<p class="comment-text"><strong>Room ID:</strong> ' . $row["room_id"] . '</p>';
-            echo '<p class="comment-text"><strong>Content:</strong> ' . htmlspecialchars($row["content"]) . '</p>';
-            echo '<p class="comment-footer"><strong>Created At:</strong> ' . date("d-M-Y h:i A", strtotime($row["created_at"])) . '</p>';
-            
-            // Fetch replies for the comment
-            $reply_sql = "SELECT content, created_at, user_id FROM comments WHERE parent_id = " . $row['comment_id'];
-            $reply_result = $conn->query($reply_sql);
-
-            if ($reply_result->num_rows > 0) {
-                while ($reply = $reply_result->fetch_assoc()) {
-                    echo '<div class="reply">';
-                    echo '<p class="reply-text"><strong>Reply by User ' . ($reply["user_id"] ? $reply["user_id"] : 'Anonymous') . ':</strong> ' . htmlspecialchars($reply["content"]) . '</p>';
-                    echo '<p class="reply-text"><strong>Created At:</strong> ' . date("d-M-Y h:i A", strtotime($reply["created_at"])) . '</p>';
-                    echo '</div>';
-                }
-            }
-
-            // Reply form
-            echo '<form action="comments.php" method="POST">
-                    <textarea name="response" placeholder="Reply here..." required></textarea>
-                    <input type="hidden" name="comment_id" value="' . $row['comment_id'] . '">
-                    <button type="submit" name="reply">Submit Reply</button>
-                  </form>';
-            echo '</div>';
-        }
-    } else {
-        echo "<p>No comments found.</p>";
-    }
-
-    $conn->close();
-    ?>
+        <div class="form-section">
+            <h2>Add a Comment</h2>
+            <form action="submit_comment.php" method="POST">
+                <label for="room_id">Room ID:</label>
+                <input type="number" id="room_id" name="room_id" min="1" required>
+                
+                <label for="comment">Comment:</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+                
+                <button type="submit">Submit Comment</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
