@@ -2,6 +2,7 @@
 include 'db_connection.php';
 session_start();
 
+
 if (!isset($_SESSION['user_id'])) {
     die("Access denied. Please log in first.");
 }
@@ -12,7 +13,8 @@ try {
 
     $sql = "SELECT booking_id, room_id, booking_date, start_time, end_time 
             FROM bookings 
-            WHERE user_id = :user_id";
+            WHERE user_id = :user_id AND booking_date >= NOW() 
+            ORDER BY booking_date ASC"; 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['user_id' => $user_id]);
 
@@ -22,16 +24,24 @@ try {
     <head>
         <meta charset='UTF-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <title>My Bookings</title>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css' integrity='sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==' crossorigin='anonymous' referrerpolicy='no-referrer' />
+        <title>Main Page</title>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
             body {
                 font-family: 'Poppins', sans-serif;
                 background-color: #f4f3ee;
-                margin: 0;
-                display: flex;
+                line-height: 1.6;
+                width: 100%;
             }
 
+            /* Navigation Sidebar */
             nav {
                 position: fixed;
                 top: 0;
@@ -43,7 +53,6 @@ try {
                 display: flex;
                 flex-direction: column;
                 align-items: start;
-                overflow-y: auto;
             }
 
             nav .menu-items {
@@ -52,7 +61,7 @@ try {
                 flex-direction: column;
                 gap: 10px;
                 height: calc(100vh - 150px);
-                justify-content: flex-start;
+                justify-content: space-between;
             }
 
             nav .menu-items li {
@@ -66,74 +75,143 @@ try {
                 align-items: center;
                 padding: 12px 20px;
                 border-radius: 25px;
-                transition: background-color 0.3s ease, color 0.3s ease;
+                transition: background-color 0.3s ease;
                 height: 50px;
             }
 
+            nav .menu-items li.active a,
             nav .menu-items li a:hover {
                 background-color: #6096BA;
-                color: #f4f3ee;
+                color: #A3CEF1;
             }
 
-            .main-content {
-                margin-left: 250px;
-                padding: 20px;
+            /* Dashboard Layout */
+            .dashboard {
+                position: relative;
+                left: 250px;
                 width: calc(100% - 250px);
+                min-height: 100vh;
+                background-color: #f4f3ee;
+                padding: 20px 15px;
             }
 
-            .room-table-container {
-                padding: 20px;
+            .welcome-message {
+                font-size: 2rem;
+                font-weight: bold;
+                color: #274C77;
+                margin-bottom: 20px;
+            }
+
+            .upcoming-bookings {
+                margin: 20px 20px 20px 0;
+                padding: 15px;
                 background-color: #E7ECEF;
                 border-radius: 10px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
-            .room-table-container .title {
-                font-size: 1.5rem;
+            .upcoming-bookings h2 {
+                font-size: 1.8rem;
                 color: #274C77;
                 font-weight: bold;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
 
             table {
                 width: 100%;
                 border-collapse: collapse;
+                margin-top: 20px;
             }
 
-            table th, table td {
+            table th,
+            table td {
                 padding: 12px;
                 text-align: left;
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px solid #8B8C89;
             }
 
             table th {
-                background-color: #6096BA;
+                background-color: #274C77;
                 color: #E7ECEF;
                 font-weight: bold;
             }
 
             table td {
-                color: #555;
+                color: #8B8C89;
             }
 
             table tr:hover {
                 background-color: #A3CEF1;
             }
+
+            /* Responsive Design */
+            @media (max-width: 1024px) {
+                nav {
+                    width: 200px;
+                }
+
+                .dashboard {
+                    left: 200px;
+                    width: calc(100% - 200px);
+                }
+            }
+
+            @media (max-width: 768px) {
+                nav {
+                    width: 150px;
+                }
+
+                .dashboard {
+                    left: 150px;
+                    width: calc(100% - 150px);
+                }
+            }
         </style>
     </head>
     <body>
-        <!-- Navigation Bar -->
+        <!-- Sidebar -->
         <nav>
-            <ul class='menu-items'>
-                <li><a href="11/index.php">Dashboard</a></li>
-                <li><a href='table.php'>Book Room</a></li>
-
-            </ul>
+            <div class='menu-items'>
+                <ul class='navLinks'>
+                    <li class='navList active'>
+                        <a href='index.php'>
+                            <i class='fa-solid fa-house fa-lg' style='color: #3a7ca5; margin: 5px;'></i>
+                            <span class='links'>Index</span>
+                        </a>
+                    </li>
+                    <li class='navList'>
+                        <a href='book_form.php'>
+                            <i class='fa-solid fa-plus fa-lg' style='color: #ffffff; margin: 15px;'></i>
+                            <span class='links'>Booking</span>
+                        </a>
+                    </li>
+                    <li class='navList'>
+                        <a href='bookingtable.php'>
+                            <i class='fa-solid fa-table fa-lg' style='color: #ffffff; margin: 10px;'></i>
+                            <span class='links'>Booked</span>
+                        </a>
+                    </li>
+                    <li class='navList'>
+                        <a href='comments.php'>
+                            <i class='fa-solid fa-comment fa-lg' style='color: #ffffff; margin: 10px;'></i>
+                            <span class='links'>Comment</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class='bottom-link'>
+                    <li>
+                        <a href='logout.php'>
+                            <i class='fa-solid fa-arrow-right-from-bracket fa-lg' style='color: #ffffff; margin: 10px;'></i>
+                            <span class='links'>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </nav>
 
-        <div class='main-content'>
-            <div class='room-table-container'>
-                <h2 class='title'>My Bookings</h2>";
+        <div class='dashboard'>
+            <div class='upcoming-bookings'>
+                <h2>My Upcoming Bookings</h2>";
 
     if ($stmt->rowCount() > 0) {
         echo "<table>
@@ -158,7 +236,7 @@ try {
         }
         echo "</tbody></table>";
     } else {
-        echo "<p>No bookings found.</p>";
+        echo "<p>No upcoming bookings found.</p>";
     }
 
     echo "      </div>
