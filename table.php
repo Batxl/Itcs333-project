@@ -126,8 +126,8 @@ try {
         <nav>
             <ul class='menu-items'>
                 <li><a href="11/index.php">Dashboard</a></li>
-                <li><a href='table.php'>Book Room</a></li>
-
+                <li><a href='book_form.php'>Book Room</a></li>
+                <li><a href='bookingtable.php'>My Bookings</a></li>
             </ul>
         </nav>
 
