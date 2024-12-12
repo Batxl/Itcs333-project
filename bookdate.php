@@ -6,10 +6,10 @@ include 'db_connection.php';
 //$dbanme="project";
 //$conn = new mysqli($servername, $username, $password,$dbanme);
 
-if($conn->connect_error){
-    die("Connection Failed:" . $conn->connect_error);
+//if($conn->connect_error){
+    //die("Connection Failed:" . $conn->connect_error);
 
-}
+//}
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 
@@ -82,7 +82,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <td><?php echo $row ['room_id']   ?></td>
                     <td><?php echo $row ['reservation_date']   ?></td>
                   
-                    <!--<td> <a href="http://localhost:1080/Itcs333-project-2/unbook.php?id=<?php echo $row['room_id']?>" >Unbooked</a></td>-->
+                    
                     <td> <a href="unbook.php?id=<?php echo $row['room_id']?>" >Unbooked</a></td>
                       
                     
@@ -101,14 +101,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 </div>
 </div>
 
-
-    
-    
-    
-    
-
-    
-    
     <br>
    <a href="Main page.php">Back</a>
     </body>

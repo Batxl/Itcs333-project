@@ -147,7 +147,7 @@
                     <td><?php echo $row ['type']   ?></td>
                     <td><?php echo $row ['Capacity']   ?></td>
                     <td><?php echo $row ['equipment']   ?></td>
-                    <td> <a href="http://localhost:1080/Itcs333-project-2/bookingform.php?id=<?php echo $row['room_id']?>" >Book Room</a></td>
+                    <td> <a href="http://localhost:1080/Itcs333-project-4/bookingform.php?id=<?php echo $row['room_id']?>" >Book Room</a></td>
                       
                     
                 </tr>

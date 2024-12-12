@@ -5,6 +5,11 @@
 <?php
 include 'db_connection.php';
 
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+
+    $id=$_POST["room_id"];
+    $date=$_POST[ "reservation_date" ];
+}
 $sql = "DELETE FROM reservations WHERE room_id ='".$_GET ["room_id"] . "' ";
 if(mysqli_query($conn, $sql)){
     echo "<br>";
@@ -14,7 +19,7 @@ if(mysqli_query($conn, $sql)){
         echo "Operation failed". mysqli_error($conn);
     }
     
-  
+    //$conn->close();
 mysqli_close($conn);
 ?>
 <br>
