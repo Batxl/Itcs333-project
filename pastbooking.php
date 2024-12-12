@@ -1,3 +1,20 @@
+<?php
+include 'db_connection.php';
+
+try {
+
+    $query = "SELECT booking_id, room_id, booking_date, start_time, end_time, duration 
+              FROM bookings 
+              WHERE booking_date < NOW() 
+              ORDER BY booking_date DESC";
+
+    $stmt = $pdo->query($query);
+    $pastBookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "<tr><td colspan='6'>Error fetching past bookings: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,19 +33,19 @@
                     <ul class="navLinks">
                         <li class="navList">
                             <a href="admin-dashboard.php">
-                            <i class="fa-solid fa-house fa-lg" style="color: #ffffff; margin: 5px;"></i>
+                                <i class="fa-solid fa-house fa-lg" style="color: #ffffff; margin: 5px;"></i>
                                 <span class="links">Dashboard</span>
                             </a>
                         </li>
                         <li class="navList">
                             <a href="analysis.php">
-                            <i class="fa-solid fa-chart-simple fa-lg" style="color: #ffffff; margin: 5px"></i>
+                                <i class="fa-solid fa-chart-simple fa-lg" style="color: #ffffff; margin: 5px"></i>
                                 <span class="links">Analysis</span>
                             </a>
                         </li>
                         <li class="navList">
                             <a href="upcomingbooking.php">
-                            <i class="fa-solid fa-calendar fa-lg" style="color: #ffffff; margin:5px"></i>
+                                <i class="fa-solid fa-calendar fa-lg" style="color: #ffffff; margin:5px"></i>
                                 <span class="links">Upcoming Bookings</span>
                             </a>
                         </li>
@@ -42,31 +59,29 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>reservation_id</th>
+                            <th>Booking ID</th>
                             <th>Room ID</th>
-                            <th>Date</th>
+                            <th>Booking Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Duration (mins)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        
-                        include 'admin-database.php';
-
-
-                        $query = "SELECT reservation_id,room_id,reservation_date FROM reservations WHERE reservation_date < NOW() ORDER BY reservation_date DESC";
-                        try {
-                            $stmt = $pdo->query($query);
-
-
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        if ($pastBookings) {
+                            foreach ($pastBookings as $row) {
                                 echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['reservation_id']) . "</td>"; 
+                                echo "<td>" . htmlspecialchars($row['booking_id']) . "</td>"; 
                                 echo "<td>" . htmlspecialchars($row['room_id']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['reservation_date']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['booking_date']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['start_time']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['end_time']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['duration']) . "</td>";
                                 echo "</tr>";
                             }
-                        } catch (PDOException $e) {
-                            echo "<tr><td colspan='4'>Error fetching past bookings: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                        } else {
+                            echo "<tr><td colspan='6'>No past bookings available.</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -76,4 +91,3 @@
     </section>
 </body>
 </html>
-

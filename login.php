@@ -6,10 +6,10 @@ $username = "root";
 $password = "root";
 $dbname = "project";
 
-// Create connection
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -20,14 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Validate email format
+
     if (!preg_match("/^[a-zA-Z0-9._%+-]+@(stu|admin)\.uob\.edu\.bh$/", $email)) {
         $error_message = "Invalid email format. Please use a valid stu or admin email.";
     } else {
-        // Extract user_id from email (part before '@')
+
         $user_id = substr($email, 0, strpos($email, '@'));
 
-        // Fetch user from the database
+
         $sql = "SELECT * FROM user WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $user_id);
@@ -37,9 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
 
-            // Verify password
+
             if (password_verify($password, $user['password'])) {
-                // Set session variables
+
                 $_SESSION['user_id'] = $user['user_id'];
                 $_SESSION['email'] = $user['email'];
 

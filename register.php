@@ -4,10 +4,9 @@ $username = "root";
 $password = "root";
 $dbname = "project";
 
-// Create a connection
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -19,14 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Validate email format
+
     if (!preg_match("/^[a-zA-Z0-9._%+-]+@(stu|admin)\.uob\.edu\.bh$/", $email)) {
         $error_message = "Invalid email format. Please use a valid email.";
     } else {
-        // Extract user_id from email (part before '@')
+
         $user_id = substr($email, 0, strpos($email, '@'));
 
-        // Check if email already exists
+
         $sql_check = "SELECT * FROM user WHERE email = ?";
         $stmt_check = $conn->prepare($sql_check);
         $stmt_check->bind_param("s", $email);
@@ -36,16 +35,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result_check->num_rows > 0) {
             $error_message = "This email is already registered. Please log in.";
         } else {
-            // Hash the password
+
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-            // Insert new user
+
             $sql_insert = "INSERT INTO user (user_id, email, password) VALUES (?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert);
             $stmt_insert->bind_param("sss", $user_id, $email, $hashed_password);
 
             if ($stmt_insert->execute()) {
-                // Redirect to login page after successful registration
+
                 header("Location: login.php");
                 exit();
             } else {

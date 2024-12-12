@@ -1,0 +1,51 @@
+
+.upcoming-bookings {
+    margin: 10px 20px; 
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-bookings .title {
+    display: flex;
+    align-items: center;
+    margin-top: 0; 
+    margin-bottom: 10px; 
+}
+
+.upcoming-bookings .title i {
+    margin-right: 10px; 
+}
+
+.upcoming-bookings .title .text {
+    font-size: 1.5rem;
+    color: #1e304f;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0; 
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #1e304f;
+    color: #ddd;
+    font-weight: bold;
+}
+
+table td {
+    color: #555;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}

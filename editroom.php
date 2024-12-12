@@ -1,24 +1,21 @@
 <?php
-include 'admin-database.php';
+include 'db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and retrieve input values
+
     $old_id = htmlspecialchars(trim($_POST['old_id']));
     $new_id = !empty($_POST['new_id']) ? htmlspecialchars(trim($_POST['new_id'])) : null;
     $new_capacity = !empty($_POST['new_capacity']) ? intval($_POST['new_capacity']) : null;
     $new_type = !empty($_POST['new_type']) ? htmlspecialchars(trim($_POST['new_type'])) : null;
-    $new_user_id = !empty($_POST['new_user_id']) ? htmlspecialchars(trim($_POST['new_user_id'])) : null;
-
+    $new_equipment = !empty($_POST['new_equipment']) ? htmlspecialchars(trim($_POST['new_equipment'])) : null;
 
     if (empty($old_id)) {
         echo "Error: Old Room ID is required.";
         exit;
     }
 
-
     $sql = "UPDATE room SET ";
     $params = [];
-
 
     if ($new_id !== null) {
         $sql .= "room_id = :new_id, ";
@@ -32,9 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql .= "type = :new_type, ";
         $params[':new_type'] = $new_type;
     }
-    if ($new_user_id !== null) {
-        $sql .= "user_id = :new_user_id, ";
-        $params[':new_user_id'] = $new_user_id;
+    if ($new_equipment !== null) {
+
+        $valid_equipment = ['None', 'Computer', 'Switch', 'Router'];
+        if (in_array($new_equipment, $valid_equipment)) {
+            $sql .= "equipment = :new_equipment, ";
+            $params[':new_equipment'] = $new_equipment;
+        } else {
+            echo "Error: Invalid equipment type.";
+            exit;
+        }
     }
 
 
@@ -43,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $params[':old_id'] = $old_id;
 
     try {
-        // Execute the query
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
 
@@ -61,4 +65,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "Invalid request method.";
 }
 ?>
-
