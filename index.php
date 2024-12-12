@@ -186,7 +186,7 @@ try {
                         </a>
                     </li>
                     <li class='navList'>
-                        <a href='bookingtable.php'>
+                        <a href='table.php'>
                             <i class='fa-solid fa-table fa-lg' style='color: #ffffff; margin: 10px;'></i>
                             <span class='links'>Booked</span>
                         </a>
@@ -195,6 +195,12 @@ try {
                         <a href='comments.php'>
                             <i class='fa-solid fa-comment fa-lg' style='color: #ffffff; margin: 10px;'></i>
                             <span class='links'>Comment</span>
+                        </a>
+                    </li>
+                    <li class='navList'>
+                        <a href='Notifications.php'>
+                            <i class='fa-solid fa-notification fa-lg' style='color: #ffffff; margin: 10px;'></i>
+                            <span class='links'>Notification</span>
                         </a>
                     </li>
                 </ul>

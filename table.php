@@ -1,5 +1,8 @@
 <?php
-include 'db_connection.php';
+$host = 'localhost'; 
+$db = 'project';   
+$user = 'root';      
+$pass = 'root';           
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -9,10 +12,14 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Fetch all bookings for the user
     $sql = "SELECT booking_id, room_id, booking_date, start_time, end_time 
             FROM bookings 
-            WHERE user_id = :user_id";
+            WHERE user_id = :user_id 
+            ORDER BY booking_date ASC"; 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['user_id' => $user_id]);
 
@@ -125,9 +132,9 @@ try {
         <!-- Navigation Bar -->
         <nav>
             <ul class='menu-items'>
-                <li><a href="11/index.php">Dashboard</a></li>
+                <li><a href='index.php'>Dashboard</a></li>
                 <li><a href='book_form.php'>Book Room</a></li>
-                <li><a href='bookingtable.php'>My Bookings</a></li>
+                <li><a href='table.php'>My Bookings</a></li>
             </ul>
         </nav>
 
@@ -135,6 +142,7 @@ try {
             <div class='room-table-container'>
                 <h2 class='title'>My Bookings</h2>";
 
+    // Check if bookings are available
     if ($stmt->rowCount() > 0) {
         echo "<table>
                 <thead>
@@ -147,6 +155,7 @@ try {
                     </tr>
                 </thead>
                 <tbody>";
+        // Loop through bookings
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             echo "<tr>
                     <td>{$row['booking_id']}</td>
@@ -163,8 +172,10 @@ try {
 
     echo "      </div>
             </div>
-        </body>
+        </div>
+    </body>
     </html>";
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

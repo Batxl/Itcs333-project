@@ -144,9 +144,9 @@ try {
 <body>
     <nav>
         <ul class="menu-items">
-            <li><a href="Location:/11/index.php">Dashboard</a></li>
+            <li><a href="index.php">Dashboard</a></li>
             <li><a href="book_form.php">Book Room</a></li>
-            <li><a href="bookingtable.php">My Bookings</a></li>
+            <li><a href="table.php">My Bookings</a></li>
         </ul>
     </nav>
 
